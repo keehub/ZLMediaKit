@@ -18,7 +18,9 @@
 
 namespace mediakit {
 
-static constexpr char kRtpAppName[] = "rtp";
+// static constexpr char kRtpAppName[] = "rtp";
+// TODO kestrel appName 修改
+static constexpr char kRtpAppName[] = "video/zlm";
 
 class RtpProcess final : public RtcpContextForRecv, public toolkit::SockInfo, public MediaSinkInterface, public MediaSourceEvent, public std::enable_shared_from_this<RtpProcess>{
 public:

@@ -596,7 +596,7 @@ void MediaInfo::parse(const std::string &url_in){
             vhost = DEFAULT_VHOST;
         }
     }
-    if (split_vec.size() > 1) {
+    /*if (split_vec.size() > 1) {
         app = split_vec[1];
     }
     if (split_vec.size() > 2) {
@@ -608,8 +608,38 @@ void MediaInfo::parse(const std::string &url_in){
             stream_id.pop_back();
         }
         stream = stream_id;
+    }*/
+    // TODO kestrel appName 修改
+    // rtmp://127.0.0.1:18002/video/zlm/64010000001110000001_34020000001320000001
+    if (url.find("/video/zlm") != std::string::npos) {
+        std::cout << "包含子字符串" << std::endl;
+        app = split_vec[1] + "/" + split_vec[2];
+        if (split_vec.size() > 3) {
+            string stream_id;
+            for (size_t i = 3; i < split_vec.size(); ++i) {
+                stream_id.append(split_vec[i] + "/");
+            }
+            if (stream_id.back() == '/') {
+                stream_id.pop_back();
+            }
+            stream = stream_id;
+        }
+    } else {
+        std::cout << "不包含子字符串" << std::endl;
+        if (split_vec.size() > 1) {
+            app = split_vec[1];
+        }
+        if (split_vec.size() > 2) {
+            string stream_id;
+            for (size_t i = 2; i < split_vec.size(); ++i) {
+                stream_id.append(split_vec[i] + "/");
+            }
+            if (stream_id.back() == '/') {
+                stream_id.pop_back();
+            }
+            stream = stream_id;
+        }
     }
-
     auto kv = Parser::parseArgs(params);
     auto it = kv.find(VHOST_KEY);
     if (it != kv.end()) {
